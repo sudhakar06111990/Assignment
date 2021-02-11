@@ -2,7 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 
-public class Report {
+public class ReportClass {
 	public static By btnReport = By.id("com.nobroker.app:id/btn_report");
 	public static By chkLocation = By.id("com.nobroker.app:id/cb_location");
 	public static By chkBHKType = By.id("com.nobroker.app:id/cb_bhk_type");

@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 public class SuggestEdit {
 	public static By imgGreen = By.id("com.nobroker.app:id/img_check");	
 	public static By lstBhk = By.id("com.nobroker.app:id/sp_bhk_type");
-	public static By ddl(String text)
+	public static By selectddl(String text)
 	{
 		return By.xpath("//android.widget.TextView[@text='"+text+"']");
 	}

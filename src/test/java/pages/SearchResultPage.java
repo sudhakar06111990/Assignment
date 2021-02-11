@@ -27,11 +27,7 @@ public class SearchResultPage extends Base{
 		driver.findElement(edtSearchLocations).sendKeys(PropertyHelper.helperProperty(inputtext));
 	}
 	
-	public static void selectdropdown() throws Exception
-	{
-		BaseTestClass.SelectDDL(lstBoxPlaces,PropertyHelper.helperProperty("city"));
-		//Test_AbuseReport_NoBroker.test.pass("Selcted location from dropdown sucessfully with name:"+PropertyHelper.helperProperty("city"));	
-	}
+	
 	
 	
 	public static void checkboxmethod() throws Exception

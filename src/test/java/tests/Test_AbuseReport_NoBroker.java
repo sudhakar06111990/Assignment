@@ -1,18 +1,31 @@
 package tests;
+import java.awt.Component;
 import java.net.MalformedURLException;
-
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.touch.TouchActions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.model.Report;
+
 import generic.BaseTestClass;
 import helper.PropertyHelper;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import pages.HomePage;
+import pages.LoginPage;
+import pages.ReportClass;
 import pages.SearchResultPage;
+import pages.SuggestEdit;
 import utility.AndroidUtility;
 import utility.Base;
-import generic.BaseTestClass;
 
 public class Test_AbuseReport_NoBroker extends BaseTestClass{
 	
@@ -34,6 +47,7 @@ public class Test_AbuseReport_NoBroker extends BaseTestClass{
 	
 	
 	
+
 	@Test
 	public void test_abuse() throws Exception
 	{	
@@ -41,84 +55,133 @@ public class Test_AbuseReport_NoBroker extends BaseTestClass{
 		obj_home.ClickContinue();
 		
 		//Click on Allow button In The Permission Window
+		Thread.sleep(1000);
 		obj_home.ClickAllowPermission();
+		Thread.sleep(1000);
 		obj_home.ClickAllowPermission();
+		Thread.sleep(1000);
 		obj_home.ClickAllowPermission();
 		
 		//Clicking On The Buy Tab
+		Thread.sleep(1000);
 		obj_home.ClickBuyButton();	
 		
 		//Validated home page title
-		basetc_obj.verifyPageIsDisplayed(HomePage.ttlHome, "World's Largest NoBrokerage Property Site");	
+		basetc_obj.verifyPageIsDisplayed(HomePage.ttlHome, "World's Largest NoBrokerage Property Site");
 		
 		//Clicking On The Search Related Box
 		obj_home.ClickSearchHome();
 		
-		//Validating search page title
-		
-		
+		//Verify Related Search Section Is Displayed
 		basetc_obj.verifyPageIsDisplayed(SearchResultPage.lstBoxPlaces, "Search Related Section");
-		
-		//Search first location from the drop down
-		//basetc_obj.inputText(SearchResultPage.edtSearchLocations, PropertyHelper.helperProperty("location1"));
-		
-		//Select The First Option From The DropDown
-		//basetc_obj.tapOnElement(SearchResultPage.lstFirstEntry, "Drop Down List");
 
-		//Search second location from the drop down
-		//basetc_obj.inputText(SearchResultPage.edtSearchLocations, PropertyHelper.helperProperty("location2"));
-
-		//Select The Second Option From The DropDown
-		//basetc_obj.tapOnElement(SearchResultPage.lstFirstEntry, "Drop Down List");
-
-		//clicking on checkbox with caption Include Nearby Properties
-		//SearchResultPage.checkboxmethod();
-		//basetc_obj.tapOnElement(SearchResultPage.chkIncludeNearByProperties, "Include nearby properties");
-
-		
-		
-		
-		
-		
-		
-		//Thread.sleep(3000);
-		//obj_home.selectdropdown();
-		//handleAlert();
-		
-		//Select two localities from Search Box bar
-		//basetc_obj.verifyPageIsDisplayed(SearchResultPage.txtPropertyStatus, "Property Status");	
-		//SearchResultPage.enterText(PropertyHelper.helperProperty("location1"));
-		//obj_home.selectdropdown(PropertyHelper.helperProperty("location1"));
-		//obj_home.enterText(PropertyHelper.helperProperty("location2"));
-		//obj_home.selectdropdown(PropertyHelper.helperProperty("location2"));
+		//Selected city from the drop down as 'Bangalore'
+		basetc_obj.SelectDDL(SearchResultPage.lstBoxPlaces, PropertyHelper.helperProperty("city"));
 				
-		//Click on the checkbox "Include nearby properties
-		//SearchResultPage.checkboxmethod();
-		
-		//select 2 bhk and 3 bhk from from the number of bedroom sections
-		
+		//Entered Location Search text Field 
+		basetc_obj.inputText(SearchResultPage.edtSearchLocations, "Search Location", PropertyHelper.helperProperty("location1"));
+
+		//Selected above location from from the drop-down from the autosuggestion
+		basetc_obj.tapOnElement(HomePage.btnSearch, "Search Button");
 	
-		//Click on search related button
+		//Entered Location Search text Field 
+		basetc_obj.inputText(SearchResultPage.edtSearchLocations, "Search Location", PropertyHelper.helperProperty("location2"));
+
+		//Selected above location from from the drop-down from the autosuggestion
+		basetc_obj.tapOnElement(HomePage.btnSearch, "Search Button");
+	
+		//User clicked on Include Nearby Properties CheckBox element
+		basetc_obj.tapOnElement(SearchResultPage.chkIncludeNearByProperties, "Include Nearby Propertis Check Box");
+
+		//User clicked on Search element
+		basetc_obj.tapOnElement(HomePage.btnSearch, "Search Button");
 		
-		//Scroll down on the Property listing page and click on the 4th property.
+		//Validated result Page
+		basetc_obj.verifyPageIsDisplayed(SearchResultPage.pgSearch, "Search Result");
+		
+		//Scroll down till fourth tile and Clicked on 4th Property Image element
+		for (int i = 0; i <=1;i++)
+			basetc_obj.swipeInVerticalUnits(0.5, 0.9, 0.5, 0.2, 2);
+		basetc_obj.tapOnElement(SearchResultPage.imgThumbnail, "Property Image");
 		
 		
-		//Scroll down to till end and click on “Wrong Info” which comes under ‘Report what was’t correct in this property’.
+		//Validated Result Page
+		basetc_obj.verifyPageIsDisplayed(SearchResultPage.btnOwnerContact, "Specific Propery Result");
+
+		//Validated wrong info element
+		basetc_obj.swipeToText(SearchResultPage.txtWrongInfo, "text", "Wrong Info", 0.5, 0.9, 0.5, 0.2, 2);
+
+		//Clicked on Wrong Info element
+		basetc_obj.tapOnElement(SearchResultPage.txtWrongInfo, "Wrong Info");
+
+		//Validated nobroker page
+		basetc_obj.verifyPageIsDisplayed(LoginPage.txtPhoneNumber, "No Broker Login");
+
+		//Entered Phone Number Text
+		basetc_obj.inputText(LoginPage.txtPhoneNumber, "Phone Number", PropertyHelper.helperProperty("username"));
+
 		
-		//Select all check-boxes in “What’s wrong” section and click on Report .
+		//Clicked on Password Radio button element
+		basetc_obj.tapOnElement(LoginPage.radioPassword, "Password Radio Button");
+
 		
-		//Change 3BHK to 4+BHK from ‘whats is the correct configuration’ section in “Suggest an Edit” page.
+		//Entered Password 
+		basetc_obj.inputText(LoginPage.editPassword, "Password", PropertyHelper.helperProperty("password"));
+		basetc_obj.swipeInVerticalUnits(0.125, 0.5, 0.125, 0.145, 2);
+
+		//Clicked on continue button
+		basetc_obj.tapOnElement(LoginPage.btnContinue, "Continue Button"); 
+
+		//Validated Report Page
+		basetc_obj.verifyPageIsDisplayed(ReportClass.btnReport, "Report");
+
+		//Clicked on all checkboxes
+		basetc_obj.tapOnElement(ReportClass.chkLocation, "Location Check Box");
+		basetc_obj.tapOnElement(ReportClass.chkFakePhotos, "Fake Photos Check Box");
+		basetc_obj.tapOnElement(ReportClass.chkBHKType, "BHK Type Check Box");
+		basetc_obj.tapOnElement(ReportClass.chkAvailabilityDate, "Availability Date Check Box");
+		basetc_obj.tapOnElement(ReportClass.chkPrice, "Price Check Box");
+		basetc_obj.tapOnElement(ReportClass.chkOther, "Other Check Box");
+		basetc_obj.tapOnElement(ReportClass.btnReport, "Report Button");
 		
 		
-		//click on the “save changes” button and verify the successful message “Thank you for the Feedback”.
-	}
+    	//Validated Thank You For Your Feedback Banner
+		basetc_obj.verifyPageIsDisplayed(SuggestEdit.imgGreen, "Thank You For Your Feeback Banner");
+		
+		
+		//clicked on 3BHK List elements
+		String actualBhk = basetc_obj.getElementAttribute(SearchResultPage.txtTitleProperty, "text");
+		basetc_obj.tapOnElement(SuggestEdit.lstBhk, "BHK Type Drop Down List");
+		if(actualBhk.contains("4+"))
+			basetc_obj.tapOnElement(SuggestEdit.selectddl("3 BHK"), "3 BHK List");
+		else if(actualBhk.contains("3"))
+			basetc_obj.tapOnElement(SuggestEdit.selectddl("4 BHK"), "4 BHK List");
+		else if(actualBhk.contains("2"))
+			basetc_obj.tapOnElement(SuggestEdit.selectddl("4 BHK"), "4 BHK List");
+		else if(actualBhk.contains("4 BHK"))
+			basetc_obj.tapOnElement(SuggestEdit.selectddl("3 BHK"), "4 BHK List");
+		else
+			basetc_obj.tapOnElement(SuggestEdit.selectddl("4 BHK"), "4 BHK List");
+	
+		//Entered Note Edit Field 
+		basetc_obj.swipeToText(SuggestEdit.btnAddNote, "text", "Add a note", 0.5, 0.8, 0.5, 0.2, 2);
+		basetc_obj.inputText(SuggestEdit.btnAddNote, "Note Edit Field", PropertyHelper.helperProperty("password"));
+		
+		
+		//clicked on Save Changed Button 
+		basetc_obj.tapOnElement(SuggestEdit.btnSaved, "Save Changes Button");
+		
+		
+		//Validated Thank you message
+		basetc_obj.verifyPageIsDisplayed(SuggestEdit.txtThank, "Thank You Message Text");    	
+    	}
 	
 	
 	@AfterClass
 	public void ClosingDriver() throws MalformedURLException
 	{
-		//driver.close();
-		//driver.quit();
+		driver.close();
+		driver.quit();
 		test.pass("Driver got terminated successfully");
 		
 	}

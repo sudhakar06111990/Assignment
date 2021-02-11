@@ -12,12 +12,12 @@ public class HomePage extends Base{
 	public static By btnContinue = By.id("com.nobroker.app:id/yesPhoneState");
 	public static By btnAllowPermission = By.id("com.android.packageinstaller:id/permission_allow_button");
 	public static By btnBuy = By.id("com.nobroker.app:id/buyLayout");
-	public static By btnSearch = By.id("com.nobroker.app:id/locationImageHome");
 	public static By edtSearchLocations = By.id("com.nobroker.app:id/localityAutoCompleteTxt");
 	public static By lstFirstEntry = By.id("com.nobroker.app:id/logo");
 	public static By chkIncludeNearByProperties = By.id("com.nobroker.app:id/nearByRadio");
 	public static By ttlHome = By.id("com.nobroker.app:id/homeTitle");
-	
+	public static By btnSearch = By.id("com.nobroker.app:id/locationImageHome");
+
 	public void ClickContinue() throws IOException
 	{
 		driver.findElement(btnContinue).click();
